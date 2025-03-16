@@ -86,7 +86,6 @@ const Navbar = () => {
           <li className="text-white py-1">
             <Link to="/login">Log in</Link>
           </li>
-          
         </ul>
       </div>
     </header>
