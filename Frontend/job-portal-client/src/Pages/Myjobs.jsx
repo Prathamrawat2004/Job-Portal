@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Myjobs = () => {
+  const email = "prathamrawat2004@gmail.com"
   const [jobs, setJobs] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -12,7 +13,7 @@ const Myjobs = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`http://localhost:5000/`)
+    fetch(`http://localhost:5000/myJobs/${email}`)
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);

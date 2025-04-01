@@ -5,6 +5,7 @@ import { useLoaderData, useParams } from "react-router-dom";
 
 const UpdateJob = () => {
   const { id } = useParams();
+  console.log(id);
   const {
     _id,
     jobTitle,

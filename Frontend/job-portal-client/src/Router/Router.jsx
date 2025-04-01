@@ -8,6 +8,7 @@ import SalaryPage from "../Pages/SalaryPage";
 import UpdateJob from "../Pages/UpdateJob";
 import Login from "../components/Login";
 import JobDetails from "../Pages/JobDetails";
+import SignUp from "../Pages/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -18,18 +19,22 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+
       {
         path: "/post-job",
         element: <CreateJob />,
       },
+
       {
         path: "/my-job",
         element: <Myjobs/>,
       },
+
       {
         path: "/salary",
         element: <SalaryPage/>,
       },
+
       {
         path: "edit-job/:id",
         element: <UpdateJob/>,
@@ -42,6 +47,12 @@ const router = createBrowserRouter([
         path: "/job/:id",
         element: <JobDetails/>
       },
+
+      {
+        path: "/sign-up",
+        element: <SignUp/>
+      },
+
 
       
     ],
