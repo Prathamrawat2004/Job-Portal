@@ -1,8 +1,27 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Creatable from "react-select/creatable";
+import { useLoaderData, useParams } from "react-router-dom";
 
-const CreateJob = () => {
+const UpdateJob = () => {
+  const { id } = useParams();
+  const {
+    _id,
+    jobTitle,
+    companyName,
+    minPrice,
+    maxPrice,
+    salaryType,
+    jobLocation,
+    postingDate,
+    experienceLevel,
+    companyLogo,
+    employmentType,
+    description,
+    postedBy,
+    skills,
+  } = useLoaderData();
+
   const [selectedOption, setSelectedOption] = useState(null);
   const {
     register,
@@ -13,8 +32,8 @@ const CreateJob = () => {
   const onSubmit = (data) => {
     data.skills = selectedOption;
     console.log(data);
-    fetch("http://localhost:5000/post-job", {
-      method: "POST",
+    fetch(`http://localhost:5000/update-job/${id}`, {
+      method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(data),
     })
@@ -22,7 +41,7 @@ const CreateJob = () => {
       .then((result) => {
         console.log(result);
         if (result.acknowledged === true) {
-          alert("Job Posted Successfully!");
+          alert("Job Updated Successfully!");
         }
       });
   };
@@ -48,7 +67,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Job Title</label>
               <input
                 type="text"
-                defaultValue={"Web Developer"}
+                defaultValue={jobTitle}
                 {...register("jobTitle")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
               />
@@ -57,6 +76,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Company Name</label>
               <input
                 type="text"
+                defaultValue={companyName}
                 placeholder="Ex: Microsoft"
                 {...register("companyName")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
@@ -70,6 +90,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Minimum Salary</label>
               <input
                 type="text"
+                defaultValue={minPrice}
                 placeholder="$20k"
                 {...register("minPrice")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
@@ -79,6 +100,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Maximum Salary</label>
               <input
                 type="text"
+                defaultValue={maxPrice}
                 placeholder="$120k"
                 {...register("maxPrice")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
@@ -94,7 +116,7 @@ const CreateJob = () => {
                 {...register("salaryType")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
               >
-                <option value="">Choose your salary</option>
+                <option value={salaryType}>{salaryType}</option>
                 <option value="Hourly">Hourly</option>
                 <option value="Monthly">Monthly</option>
                 <option value="Yearly">Yearly</option>
@@ -104,6 +126,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Job Location</label>
               <input
                 type="text"
+                defaultValue={jobLocation}
                 placeholder="Ex: New York"
                 {...register("jobLocation")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
@@ -117,6 +140,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Job Posting Date</label>
               <input
                 type="date"
+                defaultValue={postingDate}
                 placeholder="Ex: 2023-11-03"
                 {...register("postingDate")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
@@ -128,7 +152,7 @@ const CreateJob = () => {
                 {...register("experienceLevel")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
               >
-                <option value="">Choose your experience</option>
+                <option value={experienceLevel}>{experienceLevel}</option>
                 <option value="NoExperience">NoExperience</option>
                 <option value="Internship">Internship</option>
                 <option value="Work remotely">remotely</option>
@@ -140,7 +164,7 @@ const CreateJob = () => {
           <div>
             <label className="block mv-2 text-lg">Required Skill Sets:</label>
             <Creatable
-              defaultValue={selectedOption}
+              defaultValue={skills}
               onChange={setSelectedOption}
               options={options}
               isMulti
@@ -154,6 +178,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Company Logo</label>
               <input
                 type="url"
+                defaultValue={companyLogo}
                 placeholder="Paste your company logo URL:"
                 {...register("companyLogo")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
@@ -165,7 +190,7 @@ const CreateJob = () => {
                 {...register("employmentType")}
                 className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
               >
-                <option value="">Choose your experience</option>
+                <option value={employmentType}>{employmentType}</option>
                 <option value="Full-time">Full-time</option>
                 <option value="Part-time">Part-time</option>
                 <option value="Temporary">Temporary</option>
@@ -181,6 +206,7 @@ const CreateJob = () => {
               rows={6}
               placeholder="Job Description"
               {...register("description")}
+              defaultValue={description}
             />
           </div>
 
@@ -189,6 +215,7 @@ const CreateJob = () => {
             <label className="block mb-2 text-lg">Job Posted</label>
             <input
               type="email"
+              defaultValue={postedBy}
               placeholder="Your Email..."
               {...register("postedBy")}
               className="block w-full flex-1 border-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
@@ -205,4 +232,4 @@ const CreateJob = () => {
   );
 };
 
-export default CreateJob;
+export default UpdateJob;

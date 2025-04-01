@@ -15,7 +15,7 @@ const Home = () => {
   // API handling
   useEffect(() => {
     setIsLoading(true);
-    fetch("jobs.json") // api
+    fetch("http://localhost:5000/all-jobs") // api
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);
@@ -155,7 +155,9 @@ const Home = () => {
         </div>
 
         {/* right side */}
-        <div className="bg-white p-4 rounded"><NewsLetter/></div>
+        <div className="bg-white p-4 rounded">
+          <NewsLetter />
+        </div>
       </div>
     </div>
   );

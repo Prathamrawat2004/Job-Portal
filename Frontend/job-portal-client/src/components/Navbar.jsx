@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { FaBars, FaXmark } from "react-icons/fa6";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import app from "../Firebase/firebase.config";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,13 +16,29 @@ const Navbar = () => {
     { path: "/salary", title: "Salary Estimate" },
     { path: "/post-job", title: "Post A Job" },
   ];
+  const auth = getAuth();
+  const googleAuthProvider = new GoogleAuthProvider();
+  const handleLogin = () => {
+    signInWithPopup(auth, googleAuthProvider)
+      .then((result) => {
+        const user = result.user;
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
 
   return (
     <header className="max-w-screen-2xl container mx-auto xl:px-24 px-24">
       <nav className="flex justify-between items-center py-6">
         <a href="/" className="flex items-center text-2xl text-black">
           <img src="/images/joblogo.jpg" className="h-12 w-12" alt="" />
-          <span>Job Portal</span>
+          <span>HireNest</span>
         </a>
 
         {/* nav-items for large devices */}
@@ -38,10 +56,10 @@ const Navbar = () => {
         </ul>
 
         {/* signup and login btn */}
-        <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
-          <Link to="/login" className="py-2 px-5 border rounded">
+        <div className="text-base text-primary font-medium space-x-5 hidden lg:flex">
+          <p className="py-2 px-5 border rounded cursor-pointer" onClick={handleLogin}>
             Log in
-          </Link>
+          </p>
           <Link
             to="/sign-up"
             className="py-2 px-5 border rounded bg-blue text-white"
@@ -83,8 +101,8 @@ const Navbar = () => {
             </li>
           ))}
 
-          <li className="text-white py-1">
-            <Link to="/login">Log in</Link>
+          <li className="text-white py-1 cursor-pointer">
+            <p onClick={handleLogin}>Log in</p>
           </li>
         </ul>
       </div>
