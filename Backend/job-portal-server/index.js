@@ -29,9 +29,9 @@ async function run() {
     // creating database and collections
     const db = client.db("JobPortal");
     const jobsCollections = db.collection("Jobs");
+    const usersCollections = db.collection("Users");
 
-    // routes
-
+    // Job Routes
     // 1. Get all jobs
     app.get("/all-jobs", async (req, res) => {
       try {
@@ -98,6 +98,29 @@ async function run() {
         options
       );
       res.send(result);
+    });
+
+    // User routes
+    // 1. adding new user
+    app.post("/sign-up", async (req, res) => {
+      const { name, phoneNo, email, password, address } = req.body;
+
+      // checking if user already exists
+      const existingUser = await usersCollections.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ message: "User already exists!" });
+      }
+
+      // creating a new user
+      const newUser = { name, phoneNo, email, password, address };
+      const result = await usersCollections.insertOne(newUser);
+
+      if (result.insertedId) {
+        return res.status(200).send(result);
+      } else {
+        res.status(500).json({ message: "Internal Server Error" });
+        console.log(error);
+      }
     });
 
     // Send a ping to confirm a successful connection
