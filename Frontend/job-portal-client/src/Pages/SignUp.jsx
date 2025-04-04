@@ -1,16 +1,19 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { ResultContext } from "../Context/ResultContext";
 
 const SignUp = () => {
+  const { setResultAck } = useContext(ResultContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     // making the request to add user
     fetch("http://localhost:5000/sign-up", {
       method: "POST",
@@ -20,8 +23,10 @@ const SignUp = () => {
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
-        if (result.acknowledged === true) {
+        if (result) {
           alert("SignUp Successfull!");
+          setResultAck(result.user);
+          localStorage.setItem("Users", JSON.stringify(result.user));
           navigate("/"); // redirecting to home page
         }
       });

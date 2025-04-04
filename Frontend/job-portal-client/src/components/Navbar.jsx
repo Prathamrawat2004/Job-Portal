@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { FaBars, FaXmark } from "react-icons/fa6";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import app from "../Firebase/firebase.config";
+import Logout from "./Logout";
+import { useContext } from "react";
+import { ResultContext } from "../Context/ResultContext";
 
-const Navbar = () => {
+const Navbar = ({ resultAck }) => {
+  const { setResultAck } = useContext(ResultContext);
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleMenuToggler = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -16,12 +21,23 @@ const Navbar = () => {
     { path: "/salary", title: "Salary Estimate" },
     { path: "/post-job", title: "Post A Job" },
   ];
+
   const auth = getAuth();
   const googleAuthProvider = new GoogleAuthProvider();
   const handleLogin = () => {
     signInWithPopup(auth, googleAuthProvider)
       .then((result) => {
         const user = result.user;
+        alert("Login Successfull!");
+        setResultAck(result.user);
+        localStorage.setItem(
+          "Users",
+          JSON.stringify({
+            name: user.displayName,
+            email: user.email,
+          })
+        );
+        navigate("/");
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -56,17 +72,27 @@ const Navbar = () => {
         </ul>
 
         {/* signup and login btn */}
-        <div className="text-base text-primary font-medium space-x-5 hidden lg:flex">
-          <p className="py-2 px-5 border rounded cursor-pointer" onClick={handleLogin}>
-            Log in
-          </p>
-          <Link
-            to="/sign-up"
-            className="py-2 px-5 border rounded bg-blue text-white"
-          >
-            Sign up
-          </Link>
-        </div>
+        {resultAck ? (
+          <div className="sm:hidden hidden md:block">
+            {" "}
+            <Logout />
+          </div>
+        ) : (
+          <div className="text-base text-primary font-medium space-x-5 hidden lg:flex">
+            <p
+              className="py-2 px-5 border rounded cursor-pointer"
+              onClick={handleLogin}
+            >
+              Log in
+            </p>
+            <Link
+              to="/sign-up"
+              className="py-2 px-5 border rounded bg-blue text-white"
+            >
+              Sign up
+            </Link>
+          </div>
+        )}
 
         {/* mobile menu */}
         <div className="md:hidden block">
@@ -101,9 +127,15 @@ const Navbar = () => {
             </li>
           ))}
 
-          <li className="text-white py-1 cursor-pointer">
-            <p onClick={handleLogin}>Log in</p>
-          </li>
+          {resultAck ? (
+            <li className="text-white">
+              <Logout />
+            </li>
+          ) : (
+            <li className="text-white py-1 cursor-pointer">
+              <p onClick={handleLogin}>Log in</p>
+            </li>
+          )}
         </ul>
       </div>
     </header>

@@ -116,7 +116,13 @@ async function run() {
       const result = await usersCollections.insertOne(newUser);
 
       if (result.insertedId) {
-        return res.status(200).send(result);
+        return res.status(200).json({
+          message: "User created successfully!",
+          user: {
+            name: newUser.name,
+            email: newUser.email,
+          },
+        });
       } else {
         res.status(500).json({ message: "Internal Server Error" });
         console.log(error);

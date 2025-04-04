@@ -9,6 +9,7 @@ import UpdateJob from "../Pages/UpdateJob";
 import Login from "../components/Login";
 import JobDetails from "../Pages/JobDetails";
 import SignUp from "../Pages/SignUp";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -22,42 +23,51 @@ const router = createBrowserRouter([
 
       {
         path: "/post-job",
-        element: <CreateJob />,
+        element: (
+          <ProtectedRoute>
+            <CreateJob />
+          </ProtectedRoute>
+        ),
       },
 
       {
         path: "/my-job",
-        element: <Myjobs/>,
+        element: (
+          <ProtectedRoute>
+            <Myjobs />
+          </ProtectedRoute>
+        ),
       },
 
       {
         path: "/salary",
-        element: <SalaryPage/>,
+        element: (
+          <ProtectedRoute>
+            <SalaryPage />
+          </ProtectedRoute>
+        ),
       },
 
       {
         path: "edit-job/:id",
-        element: <UpdateJob/>,
+        element: <UpdateJob />,
 
         // fetching the content before the component renders
-        loader: ({params}) => fetch(`http://localhost:5000/all-jobs/${params.id}`)
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/all-jobs/${params.id}`),
       },
 
       {
         path: "/job/:id",
-        element: <JobDetails/>
+        element: <JobDetails />,
       },
 
       {
         path: "/sign-up",
-        element: <SignUp/>
+        element: <SignUp />,
       },
-
-
-      
     ],
   },
-  
 ]);
 
 export default router;
