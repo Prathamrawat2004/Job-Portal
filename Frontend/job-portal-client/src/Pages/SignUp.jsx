@@ -15,7 +15,7 @@ const SignUp = () => {
   const onSubmit = (data) => {
     // console.log(data);
     // making the request to add user
-    fetch("http://localhost:5000/sign-up", {
+    fetch("https://job-portal-2-ygd6.onrender.com/sign-up", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(data),

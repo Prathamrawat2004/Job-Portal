@@ -13,7 +13,7 @@ const Myjobs = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`http://localhost:5000/myJobs/${email}`)
+    fetch(`https://job-portal-2-ygd6.onrender.com/myJobs/${email}`)
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);

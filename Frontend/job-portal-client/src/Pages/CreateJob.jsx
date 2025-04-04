@@ -13,7 +13,7 @@ const CreateJob = () => {
   const onSubmit = (data) => {
     data.skills = selectedOption;
     console.log(data);
-    fetch("http://localhost:5000/post-job", {
+    fetch("https://job-portal-2-ygd6.onrender.com/post-job", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(data),

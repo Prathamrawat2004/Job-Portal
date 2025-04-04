@@ -15,7 +15,7 @@ const Home = () => {
   // API handling
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:5000/all-jobs") // api
+    fetch("https://job-portal-2-ygd6.onrender.com/all-jobs") // api
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);
